@@ -2,22 +2,15 @@ provider "aws" {
   region = "us-east-1"
 }
 
-provider "kubernetes" {
-  config_path = "~/.kube/config"
-}
-
 module "networking" {
-  source              = "../../modules/networking"
-  vpc_cidr            = "10.0.0.0/16"
-  public_subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnet_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
-  azs                 = ["us-east-1a", "us-east-1b"]
-  name_prefix         = "pokernowai"
-}
-
-module "iam" {
-  source      = "../../modules/iam"
-  name_prefix = "pokernowai"
+  source                = "../../modules/networking"
+  vpc_cidr              = "10.123.0.0/16"
+  public_subnet_cidrs   = ["10.123.1.0/24", "10.123.2.0/24"]
+  private_subnet_cidrs  = ["10.123.3.0/24", "10.123.4.0/24"]
+  intra_subnet_cidrs    = ["10.123.5.0/24", "10.123.6.0/24"]
+  azs                   = ["us-east-1a", "us-east-1b"]
+  name_prefix           = "pokernowai"
+  region                = "us-east-1"
 }
 
 module "eks" {
