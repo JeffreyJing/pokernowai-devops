@@ -11,10 +11,11 @@ resource "aws_iam_role" "eks_cluster_role" {
       Action = "sts:AssumeRole"
     }]
   })
+}
 
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  ]
+resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
+  role       = aws_iam_role.eks_cluster_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
 
 resource "aws_iam_role" "eks_node_role" {
@@ -30,10 +31,15 @@ resource "aws_iam_role" "eks_node_role" {
       Action = "sts:AssumeRole"
     }]
   })
+}
 
-  managed_policy_arns = [
+resource "aws_iam_role_policy_attachment" "eks_node_policies" {
+  for_each = toset([
     "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
     "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  ]
+  ])
+
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = each.value
 }

@@ -31,8 +31,4 @@ resource "helm_release" "istio_ingress" {
   version    = var.istio_version
 
   depends_on = [helm_release.istiod]
-
-  values = [
-    file("${path.module}/values.yaml")
-  ]
 }
