@@ -18,10 +18,10 @@ module "eks" {
   version = "20.8.4"
 
   cluster_name    = "pokernowai-eks"
-  cluster_version = "1.29"
+  cluster_version = "1.32"
   vpc_id          = module.networking.vpc_id
   subnet_ids      = module.networking.private_subnet_ids
-
+  cluster_endpoint_public_access = true
   enable_cluster_creator_admin_permissions = true
 
   eks_managed_node_groups = {
